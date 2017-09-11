@@ -24,6 +24,8 @@ with open('sales.tsv', 'a', encoding='utf-8') as f:
         
         if (data['appid'] == 999999):
             f.write(str(g)+"\tHidden by developer")
+        elif data['name'] == None:
+            f.write(str(g) + "\tSteamSpy error\t-\t-\t-\t-\tSteamspy error\n")
         else:
             minPlayers = data['players_forever'] - data['players_forever_variance']
             minPlayers = 0 if minPlayers < 0 else minPlayers
@@ -36,7 +38,7 @@ with open('sales.tsv', 'a', encoding='utf-8') as f:
                 dollarPrice = soup.select(".owned")[1].select("td")[3].text
                 priceAndDiscount = re.findall(r'[+-]?[0-9.]+', str(dollarPrice))
             except:
-                f.write(str(g) + "\t" + "{0:.2f}".format(price) + "\t" + str(data['players_forever']) + "\t" + str(data['players_forever_variance']) + "\t" + str(minPlayers) + "\t0\t0\tError at steamdb\n")
+                f.write(str(g) + "\t" + "{0:.2f}".format(price) + "\t" + str(data['players_forever']) + "\t" + str(data['players_forever_variance']) + "\t" + str(minPlayers) + "\t0\tError at steamdb\n")
                 continue
 
             if price > 0:
@@ -44,7 +46,7 @@ with open('sales.tsv', 'a', encoding='utf-8') as f:
                 print("Lower price: " + str(priceAndDiscount[0]) + "-> Estimation: " + "{0:.2f}".format(estimation))
                 f.write(str(g) + "\t" + "{0:.2f}".format(price) + "\t" + str(data['players_forever']) + "\t" + str(data['players_forever_variance']) + "\t" + str(minPlayers) + "\t" + str(priceAndDiscount[0]) + "\t" + "{0:.2f}".format(estimation) + "\n")
             else:
-                f.write(str(g) + "\tF2P\n")
+                f.write(str(g) + "\t0.0\t-\t-\t-\t-\tFPS\n")
         idx = idx + 1
         time.sleep(0.25)
             
