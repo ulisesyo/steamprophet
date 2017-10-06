@@ -3,6 +3,7 @@ import time
 import json
 import re
 from bs4 import BeautifulSoup
+import sys
 
 idx = 0
 gamesId = []
@@ -35,10 +36,13 @@ with open('sales.tsv', 'a', encoding='utf-8') as f:
             try:
                 steamdb = requests.get('https://steamdb.info/app/' + str(g))
                 soup = BeautifulSoup(steamdb.content, 'html.parser')
+                print ("Soup: ",  soup)
                 dollarPrice = soup.select(".owned")[1].select("td")[3].text
+                print("Price: ", dollarPrice)
                 priceAndDiscount = re.findall(r'[+-]?[0-9.]+', str(dollarPrice))
             except:
                 f.write(str(g) + "\t" + "{0:.2f}".format(price) + "\t" + str(data['players_forever']) + "\t" + str(data['players_forever_variance']) + "\t" + str(minPlayers) + "\t0\tError at steamdb\n")
+                print("Exception trying to get price: ", sysa.exc_info()[0])
                 continue
 
             if price > 0:
